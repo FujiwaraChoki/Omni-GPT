@@ -1,5 +1,7 @@
 # OmniGPT
 
+<img src="assets/banner.png">
+
 Have you heard of Auto-GPT? Chances are yes..
 OmniGPT is my own *extremely* simplified version of it, which can
 take input from the user and generate a static HTML-Website.
