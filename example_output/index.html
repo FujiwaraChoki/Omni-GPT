@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ChatGPT</title>
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" />
+</head>
+<body>
+    <div class="container mx-auto">
+        <h1 class="text-center text-3xl font-bold my-4">Welcome to ChatGPT!</h1>
+        <div class="flex justify-center">
+            <div class="w-1/2 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <form>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="api-key">
+                            API Key
+                        </label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="api-key" type="text" placeholder="Your API Key" />
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="prompt">
+                            Prompt
+                        </label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="prompt" type="text" placeholder="Your Prompt" />
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                            Fetch
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="flex justify-center">
+            <div class="w-1/2 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <div class="mb-4" id="response">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const apiKey = document.getElementById('api-key');
+        const prompt = document.getElementById('prompt');
+        const response = document.getElementById('response');
+        
+        document.querySelector('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            fetch('https://api.openai.com/v1/engines/davinci/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey.value}`
+                },
+                body: JSON.stringify({
+                    prompt: prompt.value,
+                    max_tokens: 50
+                })
+            }).then(res => res.json()).then(data => {
+                response.innerHTML = data.choices[0].text;
+            });
+        });
+    </script>
+</body>
+</html>
