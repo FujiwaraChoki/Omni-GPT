@@ -29,3 +29,13 @@ python3 main.py
 ```
 
 5. Start creating websites! :)
+
+## Example
+
+You can visit the generated example [here](https://example-gilt.vercel.app).
+
+This was the prompt used to generate this site:
+
+```
+A website that allows users to interact with ChatGPT through the OpenAI API, with fetch() requests in JavaScript. The user has to provide his own API Key through the frontend. The user should be able to enter a prompt and then after fetching, the website should display ChatGPT's answer. Use TailwindCSS classes.
+```
