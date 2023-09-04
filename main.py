@@ -1,5 +1,5 @@
-from utils.status import *
 from brain import *
+from utils.status import *
 
 
 def startup():

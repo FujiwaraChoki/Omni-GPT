@@ -20,24 +20,30 @@ def start():
 def generate(goal):
     spinner = Halo(text="Creating your website\n", spinner='dots')
     spinner.start()
+
+    # Usually
     openai.api_key = os.getenv("OPENAI_API_KEY")
 
+    # New
+    '''
+    openai.api_base = "https://api.nova-oss.com/v1"
+    openai.api_key = os.getenv("NOVAAI_API_KEY")
+    '''
+
     completion = openai.Completion.create(
-        model="text-davinci-003",
+        model="davinci",
         prompt=f"""Hello ChatGPT! From now on, I just want you to give me the response I want, nothing more, nothing less. I want to create a website which can do the following: '{goal}'. Give me the file names and their contents in a JSON-Array, like this: Example Input: A website which lets users interact with ChatGPT through their own API Key. Styling should be done with TailwindCSS. Example Output:
     [
        {{
-           "file_name": "index.html",
-           "file_contents": "Here should be the generated file contents from you"
+           "file_name": "",
+           "file_contents": ""
       }},
-     {{
-         "file_name": "privacy.html",
-     "file_contents":  "HTML file with Privacy Policy in it"
-     }},
      ...
      ]
 
-     Remember, that is JUST AN EXAMPLE, DO NOT BASE ANYTHING ON THIS EXAMPLE.
+    It can either be a static HTML-Site or a website using a specific framework/library, like Next.js or React.
+     
+    Put the directory names in front inside of each filename, leave out the directory if none is needed.
 
     Information for file contents:
     Do NOT EVER keep a template. Always fill out every code.
@@ -48,6 +54,8 @@ def generate(goal):
 
     The website needs at least the following:
     * Navbar
+    * Working Links
+    * Data in form of Text (Not Lorem Ipsum, But Actual Text)
     * Footer
 
     Fill out both with filler data if no data is provided from my side.

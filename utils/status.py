@@ -1,7 +1,6 @@
+import os
 from halo import Halo
 from termcolor import colored
-
-import os
 
 
 def info(message, showIcon=True):
