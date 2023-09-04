@@ -11,8 +11,13 @@ load_dotenv(".env")
 
 
 def start():
-    print(colored("I want OmniGPT to create this website: ", "magenta"), end="")
+    print(colored("I want OmniGPT to create this website, f(file): ", "magenta"), end="")
     goal = input()
+
+    if goal.startswith("f("):
+        goal = open(goal[2:-1], "r").read()
+
+    print(colored(f"\t=> Goal: {goal}", "yellow"))
 
     generate(goal)
 
@@ -22,53 +27,52 @@ def generate(goal):
     spinner.start()
 
     # Usually
+    '''
     openai.api_key = os.getenv("OPENAI_API_KEY")
+    '''
 
     # New
-    '''
     openai.api_base = "https://api.nova-oss.com/v1"
     openai.api_key = os.getenv("NOVAAI_API_KEY")
-    '''
 
     completion = openai.Completion.create(
-        model="davinci",
-        prompt=f"""Hello ChatGPT! From now on, I just want you to give me the response I want, nothing more, nothing less. I want to create a website which can do the following: '{goal}'. Give me the file names and their contents in a JSON-Array, like this: Example Input: A website which lets users interact with ChatGPT through their own API Key. Styling should be done with TailwindCSS. Example Output:
+        model="text-davinci-003",
+        prompt=f"""Hello ChatGPT! I have a specific request: I want to create a website, and I need your assistance to make it happen. However, I have some clear requirements, so please stick to them precisely. Here are the details of my project:
+
+1. **Website Purpose**: The goal of this website is to '{goal}'.
+
+2. **File Names and Contents**: I need you to provide me with a JSON-Array containing the names of files and their respective contents. Here's an example of how it should look:
+    ```json
     [
        {{
            "file_name": "",
            "file_contents": ""
-      }},
-     ...
-     ]
+       }},
+       // ... (additional files)
+    ]
+    ```
 
-    It can either be a static HTML-Site or a website using a specific framework/library, like Next.js or React.
-     
-    Put the directory names in front inside of each filename, leave out the directory if none is needed.
+3. **Website Type**: The website can be either a static HTML site or built using a specific framework/library like Next.js or React. Let me explain further:
 
-    Information for file contents:
-    Do NOT EVER keep a template. Always fill out every code.
-    for example: don't say:
-    // Code to fetch openai
-    It has to be the actual code, so:
-    fetch(url).then(...)
+   - *Static HTML Site*: This means a traditional website built using HTML, CSS, and JavaScript. Each page is a separate HTML file, and you can organize your files and directories as needed.
 
-    The website needs at least the following:
-    * Navbar
-    * Working Links
-    * Data in form of Text (Not Lorem Ipsum, But Actual Text)
-    * Footer
+   - *Framework/Library like Next.js or React*: These are more modern web development tools. They allow you to build web applications with components and a structured file hierarchy. If you choose this option, you can create directories to organize your components and pages. For example, you might have a 'components' directory and a 'pages' directory to structure your project.
 
-    Fill out both with filler data if no data is provided from my side.
+4. **Directory Names**: When specifying file names, include directory names in front of each filename. If a file doesn't belong to any directory, simply provide the filename. This helps in organizing your project and avoids naming conflicts.
 
-    Fill out all information use all best practices.
-    Don't leave any unterminated strings and always use double quotes.
-    Be creative with the files, generate multiple files.
+5. **File Contents**: When it comes to file contents, it's crucial that you don't use templates. Provide the actual code. For instance, instead of commenting like '// Code to fetch openai,' you should use the real code like 'fetch(url).then(...)'. This ensures that the code is functional and ready for use.
 
-    MAKE SURE THERE ARE NO JSON-related errors. Use single quotes if you need to quote something in the file contents string.
+6. **Website Requirements**: The website must include the following elements:
+    - Navbar
+    - Working Links
+    - Data in the form of actual text (no Lorem Ipsum, but real text)
+    - Footer
 
-    ONLY send me the JSON-Array. NOTHING else.
-    """,
-        max_tokens=3500,
+    If I haven't provided specific data, please fill these elements with placeholder data. This means you should create these elements with real code, not just placeholders.
+7. **Coding Best Practices**: Always follow best coding practices. Ensure that there are no unterminated strings, and use double quotes consistently. Be creative and generate multiple files to demonstrate your coding skills and organization.
+8. **JSON Errors**: Be vigilant to avoid any JSON-related errors. If you need to quote something within the file contents, use single quotes. This ensures that your JSON-Array is valid and error-free.
+9. **Specific Output**: I only need you to provide the JSON-Array containing the file names and contents. Please refrain from including anything else in your response. This will help keep the response clean and focused on your request.
+That's the detailed information for my request. Please adhere to these instructions carefully as I'm looking for a precise outcome. Thank you!""",
         temperature=0.5
     )
 
@@ -110,6 +114,7 @@ def parse_response(choices):
 
 def create_files_and_add_contents(filesArrayJson):
     for file in json.loads(filesArrayJson):
+        print(colored(f"Creating file '{file['file_name']}'...", "cyan"))
         create_file(file["file_name"], file["file_contents"])
 
 
